@@ -1,20 +1,11 @@
 
 package com.github.ellbur.collection.dependentmap.mutable
 
+import ellbur.dependenttypes.{DependentPair, Depender}
+
 import scala.collection.mutable
 
-trait Typed {
-  type T
-}
-
-trait DependentPair[A<:Typed] {
-  val car: A
-  val cdr: car.T
-
-  override def toString = s"D($car, $cdr)"
-}
-
-class DependentMutableMap[K<:Typed] extends mutable.Traversable[DependentPair[K]] {
+class DependentMutableMap[K<:Depender] extends mutable.Traversable[DependentPair[K]] {
   private[this] val map = mutable.Map[K,Any]()
 
   def put(key: K)(value: key.T) { map += ((key, value)) }
